@@ -28,6 +28,13 @@ const routes: Routes = [
             (m) => m.FetchNgneatComponent
           ),
       },
+      {
+        path: 'fetch-cashew',
+        loadComponent: () =>
+          import('./fetch-cashew/fetch-cashew.component').then(
+            (m) => m.FetchCashewComponent
+          ),
+      },
     ],
   },
 ];

@@ -34,10 +34,10 @@ import { Component } from '@angular/core';
           </li>
           <li class="p-0 m-0">
             <a
-              [routerLink]="['/teste5']"
+              [routerLink]="['fetch-cashew']"
               routerLinkActive="active"
               class="rota block hover:text-gray-300 transition-all p-2 border-b-2 border-b-transparent hover:border-b-2 hover:border-slate-200 cursor-pointer"
-              >Fetch dados no Service shareReplay</a
+              >Fetch dados com Cashew</a
             >
           </li>
         </ul>

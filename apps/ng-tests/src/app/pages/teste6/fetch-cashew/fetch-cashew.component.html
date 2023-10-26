@@ -1,0 +1,11 @@
+<div class="box">
+  <h3 class="title">Pokemons <button (click)="invalidateCache()">Invalida Cache</button></h3>
+  <div class="content w-[80vw]" *ngIf="pokemons$ | async as pokemons">
+    <p *ngIf="loading">Loading...</p>
+    <ng-container *ngIf="!loading">
+      <app-pokemon-list
+      [pokemons]="pokemons"
+    ></app-pokemon-list>
+    </ng-container>
+  </div>
+</div>

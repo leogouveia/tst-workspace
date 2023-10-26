@@ -1,14 +1,22 @@
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, inject } from '@angular/core';
-import { Pokemon } from './pokemons/pokemon.interface';
-import { BehaviorSubject, Observable, firstValueFrom, map, of } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { CacheBucket, HttpCacheManager, withCache } from '@ngneat/cashew';
 import {
-  UseQuery,
-  UsePersistedQuery,
-  queryOptions,
   PersistedQueryService,
   QueryClientService,
+  UsePersistedQuery,
+  UseQuery,
+  queryOptions,
 } from '@ngneat/query';
+import {
+  BehaviorSubject,
+  ReplaySubject,
+  firstValueFrom,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
+import { Pokemon } from './pokemons/pokemon.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -19,10 +27,32 @@ export class PokemonService {
   private readonly persistedQueryService = inject(PersistedQueryService);
   private readonly queryClient = inject(QueryClientService);
   private readonly usePersistedQuery = inject(UsePersistedQuery);
+  private readonly manager = inject(HttpCacheManager);
 
   baseUrl = 'http://localhost:3000';
   pokemonsBs = new BehaviorSubject<Pokemon[]>([]);
   pokemons$ = this.pokemonsBs.asObservable();
+
+  cashewBucket = new CacheBucket();
+  testeCashew = new ReplaySubject<{ size: number; offset: number }>();
+
+  pokemonsCashew$ = this.testeCashew.asObservable().pipe(
+    switchMap(({ size, offset }) => {
+      console.log('pokemonsCashew$', { size, offset });
+      return this.http.get<Pokemon[]>(
+        `${this.baseUrl}/pokemons?size=${size}&offset=${offset}`,
+        {
+          context: withCache({
+            version: 'v1',
+            key: 'pokemons-ksw',
+            bucket: this.cashewBucket,
+            ttl: 1000 * 60,
+          }),
+        }
+      );
+    }),
+    tap(() => console.log('after switchMap'))
+  );
 
   constructor() {
     this.queryClient.setDefaultOptions({
@@ -38,34 +68,13 @@ export class PokemonService {
     return this.http.get<Pokemon[]>(
       `${this.baseUrl}/pokemons?size=${size}&offset=${offset}`
     );
-    // .pipe(
-    //   map((pokemons) => {
-    //     window.localStorage.setItem(
-    //       'pokemons--stg',
-    //       JSON.stringify(pokemons)
-    //     );
-    //     return pokemons;
-    //   })
-    // );
   }
 
-  getPokemonsBs(size = 10, offset = 0) {
+  getPokemonsBs(size = 10, offset = 0, cache = false) {
     return this.getPokemons(size, offset).subscribe((pokemons) => {
       this.pokemonsBs.next(pokemons);
     });
   }
-
-  // queryPokemons(size = 10, offset = 0) {
-  //   return this.useQuery(
-  //     ['pokemons', { size, offset }],
-  //     () => this.getPokemons(size, offset),
-  //     {
-  //       cacheTime: 1000 * 60 * 60 * 24, // 24 hours
-  //       staleTime: 2000,
-  //       retry: 0,
-  //     }
-  //   );
-  // }
 
   getPokemons2(size = 10, offset = 0) {
     const localStorageValue = window.localStorage.getItem('pokemons--stg');
@@ -93,6 +102,7 @@ export class PokemonService {
           console.log('queryfn');
           return this.fetchPokemon(page);
         },
+        cacheTime: 1000 * 60 * 2,
       });
     }
   );
@@ -102,5 +112,16 @@ export class PokemonService {
     return this.queryClient.prefetchQuery(['pokemons', page], () => {
       return firstValueFrom(this.fetchPokemon(page));
     });
+  }
+
+  getPokemonWithCashew(size = 10, offset = 0) {
+    this.testeCashew.next({ size, offset });
+    console.log('getPokemonWithCashew');
+    return this.pokemonsCashew$;
+  }
+
+  invalidateCashew(size = 10, offset = 0) {
+    this.manager.delete(this.cashewBucket);
+    this.testeCashew.next({ size, offset });
   }
 }
