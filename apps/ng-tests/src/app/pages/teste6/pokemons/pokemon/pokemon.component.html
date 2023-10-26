@@ -1,0 +1,23 @@
+<div
+  class="max-w-sm rounded overflow-hidden shadow-md bg-white h-[420px] hover:shadow-lg transition-shadow transition-700"
+>
+  <img class="w-full" [src]="imageUrl" alt="Pokémon Image" />
+  <div class="px-6 py-4">
+    <div class="font-bold text-xl mb-2">{{ name }}</div>
+    <div class="mb-2">
+      <span
+        *ngFor="let type of types"
+        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
+      >
+        {{ type }}
+      </span>
+    </div>
+    <div class="text-gray-700 text-base">
+      <p>Weight: {{ weight }}</p>
+      <p>Height: {{ height }}</p>
+      <p class="overflow-clip h-[50px] text-ellipsis">
+        Abilities: {{ abilitiesList }}
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,11 @@
+<div class="poke-grid">
+  <app-pokemon
+    *ngFor="let pokemon of pokemons; trackBy: trackBy"
+    [name]="pokemon.name"
+    [imageUrl]="pokemon.avatar"
+    [weight]="pokemon.weight"
+    [height]="pokemon.height"
+    [abilities]="pokemon.abilities"
+    [types]="pokemon.types"
+  ></app-pokemon>
+</div>

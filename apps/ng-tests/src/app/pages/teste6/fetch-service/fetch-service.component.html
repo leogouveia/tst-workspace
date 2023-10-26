@@ -1,0 +1,9 @@
+<div class="box">
+  <h3 class="title">Pokemons</h3>
+  <div class="content w-[80vw]">
+    <app-pokemon-list
+      *ngIf="pokemons$ | async as pokemons"
+      [pokemons]="pokemons"
+    ></app-pokemon-list>
+  </div>
+</div>

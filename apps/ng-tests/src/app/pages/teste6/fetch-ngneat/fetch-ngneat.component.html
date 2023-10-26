@@ -1,0 +1,16 @@
+<div class="box">
+  <h3 class="title">Pokemons</h3>
+  <div class="content w-[80vw]">
+    <div>
+      <button type="button" (click)="prevPage()">Anterior</button> | &nbsp;
+      <button type="button" (click)="nextPage()">Próximo</button>
+    </div>
+    <ng-container *subscribe="pokemons$ as pokemons">
+      <p *ngIf="pokemons.isLoading">Loading...</p>
+      <p *ngIf="pokemons.isError">Erro</p>
+      <ng-container *ngIf="pokemons.isSuccess">
+        <app-pokemon-list [pokemons]="pokemons.data"></app-pokemon-list>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
