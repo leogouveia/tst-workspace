@@ -70,6 +70,15 @@ export class PokemonService {
     );
   }
 
+  getPokemonsCache(size = 10, offset = 0) {
+    return this.http.get<Pokemon[]>(
+      `${this.baseUrl}/pokemons?size=${size}&offset=${offset}`,
+      {
+        headers: { 'x-cache': 'true', 'x-refresh': 'true' },
+      }
+    );
+  }
+
   getPokemonsBs(size = 10, offset = 0, cache = false) {
     return this.getPokemons(size, offset).subscribe((pokemons) => {
       this.pokemonsBs.next(pokemons);

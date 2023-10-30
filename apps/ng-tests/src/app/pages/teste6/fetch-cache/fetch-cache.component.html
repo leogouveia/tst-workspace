@@ -1,0 +1,13 @@
+<div class="box">
+  <h3 class="title">Pokemons</h3>
+  <div class="content w-[80vw]">
+    <ng-container *ngIf="pokemons$ | async as pokemons">
+      <app-pokemon-list [pokemons]="pokemons"></app-pokemon-list>
+    </ng-container>
+  </div>
+</div>
+<div>
+  <pre>
+    <!-- <code>{{pokemons$ | async | json}}</code> -->
+  </pre>
+</div>
