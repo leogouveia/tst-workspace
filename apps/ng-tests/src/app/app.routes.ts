@@ -38,6 +38,11 @@ const routes: Routes = [
       import('./pages/teste6/teste6.module').then((m) => m.Teste6Module),
   },
   {
+    path: 'teste7',
+    loadComponent: () =>
+      import('./pages/teste7/teste7.component').then((m) => m.Teste7Component),
+  },
+  {
     path: 'home',
     loadChildren: () =>
       import('./pages/home/home.module').then((m) => m.HomeModule),

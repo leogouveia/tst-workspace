@@ -10,7 +10,7 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import pwc from 'pretty-web-console';
 
-let changeDetectionStrategy = ChangeDetectionStrategy.Default;
+const changeDetectionStrategy = ChangeDetectionStrategy.Default;
 
 @Injectable({
   providedIn: 'root',
