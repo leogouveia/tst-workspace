@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/delay/:val', (req, res) => {
-  const delay = +(<string>req.params.val ?? '1') * 1000;
+  const delay = +(req.params.val ?? '1') * 1000;
   setTimeout(() => {
     res.send({
       delay: delay,

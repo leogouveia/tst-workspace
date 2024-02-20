@@ -17,13 +17,13 @@ export class ColorsService {
   }
 
   randomColor(): string {
-    let r = Math.floor(Math.random() * 256);
-    let g = Math.floor(Math.random() * 256);
-    let b = Math.floor(Math.random() * 256);
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
     return `rgb(${r}, ${g}, ${b})`;
   }
 
-  darkenColor(color: string, factor: number = 0.5): string {
+  darkenColor(color: string, factor = 0.5): string {
     let [r, g, b] = color.match(/\d+/g)!.map(Number);
     r = Math.floor(r * factor);
     g = Math.floor(g * factor);
@@ -32,24 +32,24 @@ export class ColorsService {
   }
 
   rgbToHex(color: string): string {
-    let [r, g, b] = color.match(/\d+/g)!.map(Number);
+    const [r, g, b] = color.match(/\d+/g)!.map(Number);
     return `#${r.toString(16).padStart(2, '0')}${g
       .toString(16)
       .padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
   }
 
   generateDarkColors(n: number): string[] {
-    let colors: string[] = [];
+    const colors: string[] = [];
     for (let i = 0; i < n; i++) {
-      let color = this.randomColor();
-      let darkColor = this.darkenColor(color);
-      let hexColor = this.rgbToHex(darkColor);
+      const color = this.randomColor();
+      const darkColor = this.darkenColor(color);
+      const hexColor = this.rgbToHex(darkColor);
       colors.push(hexColor);
     }
     return colors;
   }
 
-  brightenColor(color: string, factor: number = 0.5): string {
+  brightenColor(color: string, factor = 0.5): string {
     let [r, g, b] = color.match(/\d+/g)!.map(Number);
     r = Math.min(255, r + Math.floor(255 * factor));
     g = Math.min(255, g + Math.floor(255 * factor));
@@ -58,11 +58,11 @@ export class ColorsService {
   }
 
   generateBrightColors(n: number): string[] {
-    let colors: string[] = [];
+    const colors: string[] = [];
     for (let i = 0; i < n; i++) {
-      let color = this.randomColor();
-      let brightColor = this.brightenColor(color);
-      let hexColor = this.rgbToHex(brightColor);
+      const color = this.randomColor();
+      const brightColor = this.brightenColor(color);
+      const hexColor = this.rgbToHex(brightColor);
       colors.push(hexColor);
     }
     return colors;

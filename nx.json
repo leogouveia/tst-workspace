@@ -7,6 +7,15 @@
       "inputs": ["production", "^production"]
     },
     "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/ng-tests/**/*.{ts,tsx}"],
+        "format": "json",
+        "outputFile": "eslint-report.json"
+      }
+    },
+    "asdaslint": {
       "cache": true,
       "inputs": [
         "default",

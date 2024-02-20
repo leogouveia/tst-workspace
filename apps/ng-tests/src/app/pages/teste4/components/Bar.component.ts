@@ -1,5 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subject, Subscription, finalize, takeUntil } from 'rxjs';
+import { Subject, Subscription, finalize } from 'rxjs';
 import { Teste4SharedService } from '../teste4-shared.service';
 
 @Component({
