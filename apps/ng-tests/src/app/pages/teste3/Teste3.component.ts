@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { interval } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Subscription, interval } from 'rxjs';
 import pwc from 'pretty-web-console';
 
 import { DatePipe } from '@angular/common';
@@ -17,10 +17,10 @@ import { ColorsService } from '../../shared/colors.service';
   `,
   styles: [],
 })
-export class Teste3Component {
+export class Teste3Component implements OnInit {
   counter = 0;
 
-  private subscription: any;
+  private subscription?: Subscription;
 
   constructor(
     private colorsService: ColorsService,

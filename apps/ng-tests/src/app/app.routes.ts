@@ -43,6 +43,11 @@ const routes: Routes = [
       import('./pages/teste7/teste7.component').then((m) => m.Teste7Component),
   },
   {
+    path: 'teste8',
+    loadComponent: () =>
+      import('./pages/teste8/teste8.component').then((m) => m.Teste8Component),
+  },
+  {
     path: 'home',
     loadChildren: () =>
       import('./pages/home/home.module').then((m) => m.HomeModule),

@@ -3,6 +3,7 @@ import {
   AfterViewChecked,
   ChangeDetectionStrategy,
   Component,
+  DoCheck,
   HostBinding,
   Injectable,
   NgModule,
@@ -10,16 +11,28 @@ import {
 import { BehaviorSubject } from 'rxjs';
 import pwc from 'pretty-web-console';
 
-const changeDetectionStrategy = ChangeDetectionStrategy.Default;
+const changeDetectionStrategy = ChangeDetectionStrategy.OnPush;
 
 @Injectable({
   providedIn: 'root',
 })
 export class Teste5Service {
   val: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+  value = new BehaviorSubject<number>(0);
+  value$ = this.value.asObservable();
 
+  constructor() {
+    setTimeout(() => {
+      this.value.next(1);
+    }, 5000);
+  }
   toggleValue() {
     this.val.next(this.val.getValue() === 0 ? 1 : 0);
+  }
+
+  addValue() {
+    const newValue = this.value.getValue() + 1;
+    this.value.next(newValue);
   }
 }
 
@@ -37,14 +50,15 @@ export class Teste5Service {
   styles: [''],
   changeDetection: changeDetectionStrategy,
 })
-export class A1Component implements AfterViewChecked {
+export class A1Component implements AfterViewChecked, DoCheck {
   @HostBinding('class') class = 'box';
   value = 0;
 
-  constructor() {}
-
   ngAfterViewChecked(): void {
     pwc().bg('red').color('white').log('A1Component.ngAfterViewChecked');
+  }
+  ngDoCheck(): void {
+    pwc().bg('red').color('white').log('A1Component.DoCheck');
     this.value++;
   }
 }
@@ -66,11 +80,9 @@ export class A1_1Component implements AfterViewChecked {
   @HostBinding('class') class = '';
   value = 0;
 
-  constructor() {}
-
   ngAfterViewChecked(): void {
     pwc().bg('red').color('white').log('A1_1_Component.ngAfterViewChecked');
-    this.value++;
+    // this.value++;
   }
 }
 
@@ -88,11 +100,10 @@ export class A1_1Component implements AfterViewChecked {
 export class A1_1_1Component implements AfterViewChecked {
   @HostBinding('class') class = '';
   value = 0;
-  constructor() {}
 
   ngAfterViewChecked(): void {
     pwc().bg('red').color('white').log('A1_1_1_Component.ngAfterViewChecked');
-    this.value++;
+    // this.value++;
   }
 }
 
@@ -110,11 +121,10 @@ export class A1_1_1Component implements AfterViewChecked {
 export class A1_2Component implements AfterViewChecked {
   @HostBinding('class') class = '';
   value = 0;
-  constructor() {}
 
   ngAfterViewChecked(): void {
     pwc().bg('red').color('white').log('A1_2_Component.ngAfterViewChecked');
-    this.value++;
+    // this.value++;
   }
 }
 
@@ -130,14 +140,13 @@ export class A1_2Component implements AfterViewChecked {
   styles: [''],
   changeDetection: changeDetectionStrategy,
 })
-export class A2Component {
+export class A2Component implements AfterViewChecked {
   @HostBinding('class') class = 'box';
   value = 0;
-  constructor() {}
 
   ngAfterViewChecked(): void {
     pwc().bg('IndianRed').color('white').log('A2Component.ngAfterViewChecked');
-    this.value++;
+    // this.value++;
   }
 }
 
@@ -154,16 +163,15 @@ export class A2Component {
   styles: [''],
   changeDetection: changeDetectionStrategy,
 })
-export class A2_1Component {
+export class A2_1Component implements AfterViewChecked {
   value = 0;
-  constructor() {}
 
   ngAfterViewChecked(): void {
     pwc()
       .bg('darkred')
       .color('lightCoral')
       .log('A2_1_Component.ngAfterViewChecked');
-    this.value++;
+    // this.value++;
   }
 }
 
@@ -180,16 +188,15 @@ export class A2_1Component {
   styles: [''],
   changeDetection: changeDetectionStrategy,
 })
-export class A2_1_1Component {
+export class A2_1_1Component implements AfterViewChecked {
   value = 0;
-  constructor() {}
 
   ngAfterViewChecked(): void {
     pwc()
       .bg('Firebrick')
       .color('orange')
       .log('A2_1_1Component.ngAfterViewChecked');
-    this.value++;
+    // this.value++;
   }
 }
 
@@ -202,14 +209,13 @@ export class A2_1_1Component {
   styles: [''],
   changeDetection: changeDetectionStrategy,
 })
-export class A3Component {
+export class A3Component implements AfterViewChecked {
   @HostBinding('class') class = 'box';
   value = 0;
-  constructor() {}
 
   ngAfterViewChecked(): void {
     pwc().bg('white').color('red').log('A3Component.ngAfterViewChecked');
-    this.value++;
+    // this.value++;
   }
 }
 
@@ -225,13 +231,13 @@ export class A3Component {
   `,
   changeDetection: changeDetectionStrategy,
 })
-export class B1Component {
+export class B1Component implements AfterViewChecked {
   @HostBinding('class') class = 'box';
   value = 0;
 
   ngAfterViewChecked(): void {
     pwc().bg('navy').color('white').log('B1Component.ngAfterViewChecked');
-    this.value++;
+    // this.value++;
   }
 }
 
@@ -245,12 +251,12 @@ export class B1Component {
   `,
   changeDetection: changeDetectionStrategy,
 })
-export class B1_1Component {
+export class B1_1Component implements AfterViewChecked {
   value = 0;
 
   ngAfterViewChecked(): void {
     pwc().bg('navy').color('white').log('B1_1_Component.ngAfterViewChecked');
-    this.value++;
+    // this.value++;
   }
 }
 
@@ -266,12 +272,12 @@ export class B1_1Component {
   `,
   changeDetection: changeDetectionStrategy,
 })
-export class B1_1_1Component {
+export class B1_1_1Component implements AfterViewChecked {
   value = 0;
 
   ngAfterViewChecked(): void {
     pwc().bg('navy').color('white').log('B1_1_1_Component.ngAfterViewChecked');
-    this.value++;
+    // this.value++;
   }
 }
 
@@ -283,29 +289,32 @@ export class B1_1_1Component {
   `,
   changeDetection: changeDetectionStrategy,
 })
-export class B2Component {
+export class B2Component implements AfterViewChecked {
   @HostBinding('class') class = 'box';
   value = 0;
   ngAfterViewChecked(): void {
     pwc().bg('royalblue').color('white').log('B2Component.ngAfterViewChecked');
-    this.value++;
+    // this.value++;
   }
 }
 
 @Component({
   selector: 'app-b3',
   template: `
-    <div class="title">B3 ({{ value }})</div>
+    <div class="title">B3 ({{ value$ | async }})</div>
     <div class="content">B3 works!</div>
   `,
   changeDetection: changeDetectionStrategy,
 })
-export class B3Component {
+export class B3Component implements AfterViewChecked {
   @HostBinding('class') class = 'box';
-  value = 0;
+  value$ = this.testeService.value$;
+
+  constructor(private testeService: Teste5Service) {}
+
   ngAfterViewChecked(): void {
     pwc().bg('royalblue').color('white').log('B3Component.ngAfterViewChecked');
-    this.value++;
+    // this.testeService.addValue();
   }
 }
 
@@ -321,12 +330,12 @@ export class B3Component {
   `,
   changeDetection: changeDetectionStrategy,
 })
-export class C1Component {
+export class C1Component implements AfterViewChecked {
   @HostBinding('class') class = 'box';
   value = 0;
   ngAfterViewChecked(): void {
     pwc().bg('olive').color('white').log('C1Component.ngAfterViewChecked');
-    this.value++;
+    // this.value++;
   }
 }
 
@@ -336,51 +345,51 @@ export class C1Component {
     <div class="title">C2 ({{ value }})</div>
     <div class="content">
       <button (click)="setValue()">C2 works!</button>
-
       <hr />
     </div>
   `,
   changeDetection: changeDetectionStrategy,
 })
-export class C2Component {
+export class C2Component implements AfterViewChecked {
   @HostBinding('class') class = 'box';
   value = 0;
   setValue() {
     console.log('C2Component.setValue');
   }
 
-  changeView(strategy: string) {}
+  // changeView(strategy: string) {}
 
   ngAfterViewChecked(): void {
     pwc().bg('green').color('white').log('C2Component.ngAfterViewChecked');
-    this.value++;
+    // this.value++;
   }
 }
 
 @Component({
   selector: 'app-c3',
   template: `
-    <div class="title">C3 ({{ value2 }})</div>
+    <div class="title">C3 ({{ value | async }})</div>
     <div class="content">
       <button (click)="setValue()">C3 works!</button>
     </div>
   `,
   changeDetection: changeDetectionStrategy,
 })
-export class C3Component {
+export class C3Component implements AfterViewChecked {
   @HostBinding('class') class = 'box';
-  value2 = 0;
-  value = this.teste5service.val.asObservable();
+  // value2 = 0;
+  value = this.teste5service.value$;
 
   constructor(private teste5service: Teste5Service) {}
 
   setValue() {
     console.log('C3Component.setValue');
+    this.teste5service.addValue();
   }
 
   ngAfterViewChecked(): void {
     pwc().bg('black').color('lime').log('C3Component.ngAfterViewChecked');
-    this.value2++;
+    // this.value2++;
   }
 }
 

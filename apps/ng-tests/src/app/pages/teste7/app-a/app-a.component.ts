@@ -1,36 +1,42 @@
-import { AfterViewChecked, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import pwc from 'pretty-web-console';
 import { Teste7Pipe } from '../teste7.pipe';
+import { BehaviorSubject, map, of, tap } from 'rxjs';
 
 @Component({
-  selector: 'tst-app-a',
+  selector: 'app-a',
   standalone: true,
-  imports: [CommonModule, FormsModule, Teste7Pipe],
+  imports: [CommonModule, FormsModule, Teste7Pipe, ReactiveFormsModule],
   templateUrl: './app-a.component.html',
   styleUrls: ['./app-a.component.scss'],
 })
-export class AppAComponent implements AfterViewChecked {
-  inputValue = '';
+export class AppAComponent {
+  inputValueControl = new FormControl('');
+  inputValue = this.inputValueControl.value;
   value = 0;
+  valueBS = new BehaviorSubject<string>('$$ $$');
+  value$ = this.inputValueControl.valueChanges.pipe(
+    tap(() => {
+      pwc().bg('purple').color('white').log(`Observable`);
+    }),
+    map((v) => `$$ ${v} $$`)
+  );
 
   get valueGetter() {
     pwc().bg('green').color('white').log(`valueGetter`);
     return `**${this.inputValue}**`;
   }
 
-  ngAfterViewChecked(): void {
-    pwc()
-      .bg('red')
-      .color('white')
-      .log(`Teste 7 AppAComponent.ngAfterViewChecked ${this.value}`);
-    this.value++;
-  }
-
-  formatFn(value: string) {
+  formatFn(value: string | null) {
     pwc().bg('blue').color('white').log(`formatFn`);
     return `__${value}__`;
+  }
+
+  inlineIf() {
+    pwc().bg('yellow').color('black').log('ternarioInline');
+    return this.inputValue;
   }
 
   handleButtonClick() {

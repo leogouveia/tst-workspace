@@ -6,13 +6,19 @@
       type="text"
       name="inputValue"
       class="border rounded"
-      [(ngModel)]="inputValue"
+      [formControl]="inputValueControl"
     />
   </div>
   <div>Value: {{ inputValue }}</div>
   <div>Function: {{ formatFn(inputValue) }}</div>
   <div>Getter: {{ valueGetter }}</div>
+  <div>
+    Ternario Inline:
+    {{ +inputValue! % 2 === 1 ? inlineIf() : inlineIf() }}
+  </div>
   <div>Pipe: {{ inputValue | teste7 }}</div>
+  <div>Observable: {{ value$ | async }}</div>
+
   <div>
     <button (click)="handleButtonClick()">Botao</button>
   </div>

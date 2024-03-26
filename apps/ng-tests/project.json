@@ -2,7 +2,7 @@
   "name": "ng-tests",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "tst-workspace",
+  "prefix": "app",
   "sourceRoot": "apps/ng-tests/src",
   "tags": [],
   "targets": {
